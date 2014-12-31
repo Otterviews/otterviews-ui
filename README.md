@@ -8,4 +8,5 @@ Otters in interviews
   
     lein figwheel
   
+    open http://localhost:3449
   
