@@ -3,3 +3,5 @@ dist
 resources/public/css
 resources/public/js
 target
+.idea
+*.iml
