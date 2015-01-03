@@ -10,19 +10,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;  Side Bar
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defcomponentk side-bar
-  "Side Bar"
-  [data owner]
-  (display-name [_] "side-bar")
-  (render [_]
-          (ui/sidebar [:side-bar] {})))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
 ;;  Navigation Bar
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -40,38 +27,26 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;;  Search Box
+;;  Posts
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn change-name [el]
-  (d/set-name (.. el -target -value)))
-
-(defcomponentk search-box-input 
-  "Simple search box input"
+(defcomponentk post 
+  "A post"
   [data owner]
-  (display-name [_] "search-box-input")
+  (display-name [_] "post")
   (render [_]
-          (let [text (i/text :search-box.input/placeholder)]
-            (ui/input [:search-box :input] 
-                      {:placeholder text :on-change change-name}))))
+          (ui/div [:posts-container :post] {}
+                  (ui/line [:post :title]   {} (first data))
+                  (ui/line [:post :content] {} (second data)))))
 
-(defcomponentk search-box-button 
-  "Simple search box button"
+(defcomponentk posts-container
+  "Where you can see posts"
   [data owner]
-  (display-name [_] "search-box-button")
+  (display-name [_] "post-container")
   (render [_]
-          (let [text (i/text :search-box.button/text)]
-            (ui/button [:search-box :button] {} text))))
-
-(defcomponentk search-box 
-  "Simple search box"
-  [data owner]
-  (display-name [_] "search-box")
-  (render [_]
-          (ui/line [:search-box] {} 
-                   (->search-box-input data) 
-                   (->search-box-button data))))
+          (ui/div [:posts-container] {}  
+                   (map ->post (d/get-posts)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -86,8 +61,7 @@
   (render [_]
           (ui/div [:app] {}
                   (->navigation-bar data)
-                  (->side-bar data)
-                  (->search-box data))))
+                  (->posts-container data))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

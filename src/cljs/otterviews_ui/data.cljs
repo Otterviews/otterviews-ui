@@ -28,6 +28,7 @@
 (defn get-nav-items []
   (identity (d/q '[:find ?item :where [?e :navbar/item ?item]] @conn)))
 
-
-(defn set-name [nm]
-  (d/transact! conn [{:db/id 1 :person/name nm}]))
+(defn get-posts []
+  (identity (d/q '[:find ?title ?content :where 
+                   [?e :post/title ?title]
+                   [?e :post/content ?content]] @conn)))
